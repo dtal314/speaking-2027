@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>2027 AI Speaking Guide</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a speaker's briefing binder. Masthead, deadline board, audience ledger, then ten tabbed event dossiers and a closing playbook. */
+:root {
+  --paper: #f3f5f8;
+  --sheet: #ffffff;
+  --ink: #16202e;
+  --muted: #56647a;
+  --rule: #d5dbe4;
+  --accent: #1d4ed8;
+  --accent-soft: #e3eafc;
+  --due: #b45309;
+  --due-soft: #fdf0dc;
+  --closed: #8a94a3;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f141c; --sheet: #161d28; --ink: #e6ebf2; --muted: #9aa7ba; --rule: #2a3444;
+    --accent: #7ea2ff; --accent-soft: #1c2945; --due: #f0a94b; --due-soft: #3a2a14; --closed: #6b7686;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f141c; --sheet: #161d28; --ink: #e6ebf2; --muted: #9aa7ba; --rule: #2a3444;
+  --accent: #7ea2ff; --accent-soft: #1c2945; --due: #f0a94b; --due-soft: #3a2a14; --closed: #6b7686;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font: 16px/1.6 var(--f-body);
+  padding-inline: 16px; padding-block: 0 64px;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.12; }
+p { margin: 0; }
+.eyebrow {
+  font: 700 12px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* Masthead */
+header.mast { padding-block: 48px 32px; display: grid; gap: 16px; border-bottom: 2px solid var(--ink); }
+header.mast h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.02em; max-width: 16ch; }
+header.mast .lede { font-size: 19px; color: var(--muted); max-width: 60ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; color: var(--muted); }
+.meta-row strong { color: var(--ink); font-weight: 600; }
+
+section.block { padding-block: 40px 8px; display: grid; gap: 20px; }
+section.block > h2 { font-size: clamp(26px, 3.6vw, 34px); font-weight: 700; }
+.sub { color: var(--muted); max-width: 65ch; }
+
+/* Positioning + focus */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two > * { min-width: 0; }
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 24px; display: grid; gap: 12px; align-content: start; }
+.panel h3 { font-size: 20px; }
+ol.focus { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+ol.focus li { display: grid; grid-template-columns: 2.2em 1fr; gap: 8px; }
+ol.focus .n { font: 700 14px/1.6 var(--f-mono); color: var(--accent); }
+ol.focus a { font-weight: 600; }
+
+.alert {
+  background: var(--due-soft); border: 1px solid color-mix(in srgb, var(--due) 40%, transparent);
+  border-radius: 6px; padding: 16px 20px; display: grid; gap: 6px;
+}
+.alert strong { color: var(--due); }
+.note { font-size: 14px; color: var(--muted); max-width: 75ch; }
+
+/* Tables */
+.table-scroll { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 620px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font: 700 11px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--paper); }
+td .num { font: 700 13px var(--f-mono); color: var(--muted); margin-right: 6px; }
+td.big { font: 700 15px var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td small { display: block; color: var(--muted); font-size: 13px; }
+
+.pill {
+  display: inline-block; font: 700 11px/1 var(--f-mono); letter-spacing: .04em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 99px; white-space: nowrap; margin-top: 4px;
+  background: var(--accent-soft); color: var(--accent);
+}
+.pill.hot { background: var(--due-soft); color: var(--due); }
+.pill.done { background: transparent; color: var(--closed); border: 1px solid var(--rule); }
+
+.conflicts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.conflicts > div { min-width: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; font-size: 15px; display: grid; gap: 4px; align-content: start; }
+.conflicts strong { font-family: var(--f-display); font-size: 17px; }
+
+/* Event index */
+nav.index { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.index a {
+  text-decoration: none; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule);
+  border-radius: 99px; padding: 6px 12px; font-size: 14px;
+}
+nav.index a span { font: 700 12px var(--f-mono); color: var(--accent); margin-right: 6px; }
+nav.index a:hover { border-color: var(--accent); }
+
+/* Dossiers */
+article.event {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px;
+  display: grid; grid-template-columns: 200px 1fr; overflow: hidden; scroll-margin-top: 16px;
+}
+.tab {
+  background: var(--paper); border-right: 1px solid var(--rule); padding: 24px 20px;
+  display: grid; gap: 14px; align-content: start;
+}
+.tab .big-n { font: 800 56px/1 var(--f-display); color: var(--accent); letter-spacing: -.03em; }
+.tab dl { margin: 0; display: grid; gap: 10px; font-size: 14px; }
+.tab dt { font: 700 10.5px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tab dd { margin: 0; font-weight: 600; }
+.body { padding: 24px 28px 28px; display: grid; gap: 16px; min-width: 0; }
+.body h3 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; }
+.body .sector { margin-bottom: -8px; }
+.body p { max-width: 68ch; }
+.body p b { font-weight: 700; }
+.talk {
+  border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule);
+  padding-block: 16px; display: grid; gap: 12px;
+}
+.talk h4 { font: 700 20px/1.25 var(--f-display); margin: 0; text-wrap: balance; }
+.outcomes { background: var(--accent-soft); border-radius: 6px; padding: 12px 16px; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.actions > a {
+  display: grid; gap: 2px; text-decoration: none; border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px;
+  color: var(--ink); min-width: 0;
+}
+.actions > a:hover { border-color: var(--accent); }
+.actions > a.primary { background: var(--accent); border-color: var(--accent); color: var(--sheet); }
+.actions > a .lbl { font: 700 11px/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
+.actions > a small { font-size: 13px; opacity: .85; }
+.sources { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.sources span { font: 700 11px/1.8 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
+
+/* Playbook */
+.plays { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.plays .panel p + p { margin-top: 4px; }
+.split { display: flex; height: 36px; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); font: 700 12px/36px var(--f-mono); }
+.split div { text-align: center; color: var(--ink); white-space: nowrap; overflow: hidden; border-right: 1px solid var(--sheet); }
+.split div:last-child { border-right: 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted); }
+
+footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); display: grid; gap: 8px; }
+
+@media (max-width: 760px) {
+  .two, .plays, .conflicts, .actions { grid-template-columns: 1fr; }
+  article.event { grid-template-columns: 1fr; }
+  .tab { border-right: 0; border-bottom: 1px solid var(--rule); grid-template-columns: auto 1fr; align-items: start; gap: 16px 20px; }
+  .tab .big-n { font-size: 44px; }
+  .body { padding: 20px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="eyebrow">2027 / AI Speaking &amp; Consulting · Expanded opportunity guide</div>
+    <h1>Where to present AI and build consulting work</h1>
+    <p class="lede">Ten conferences, all in 2027. Organization profiles, audience details, attendance evidence and a practical speaking approach for each event.</p>
+    <div class="meta-row">
+      <span>Prepared for <strong>Daniel Tal and presenting team</strong></span>
+      <span>Verified <strong>September 29, 2026</strong></span>
+    </div>
+  </header>
+
+  <section class="block" id="overview">
+    <div class="two">
+      <div class="panel">
+        <div class="eyebrow">The recommended positioning</div>
+        <h3>History explains the change. Real work shows the way.</h3>
+        <p>Use AI history to explain the change, then show people how to apply AI to work they recognize. Our strongest proposals connect a short historical frame to a real case, an audience exercise and a next step participants can use.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow">Where I would focus first</div>
+        <ol class="focus">
+          <li><span class="n">01</span><span><a href="#ev-01">ACMP Change Denver</a>. An immediate deadline and a direct audience for AI adoption, change planning and training.</span></li>
+          <li><span class="n">02</span><span><a href="#ev-02">TICE</a>. A strong match for staff education, AI fluency and repeatable learning programs.</span></li>
+          <li><span class="n">03</span><span><a href="#ev-03">APQC CONNECT</a>. A focused audience for measurable workflow improvement and implementation.</span></li>
+          <li><span class="n">04</span><span><a href="#ev-06">ASAE MMC+Tech</a>. A promising path beyond AEC into associations and their professional communities.</span></li>
+          <li><span class="n">05</span><span><a href="#ev-05">PSMJ AEC INNOVATE</a>. The clearest fit with existing AEC experience and firm leadership relationships.</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="alert">
+      <div><strong>Immediate priorities:</strong> ACMP proposals close September 30, 2026; TICE closes October 2, 2026.</div>
+      <div class="note">These are submission dates for 2027 conferences. All ten speaking calls were open on the verification date.</div>
+    </div>
+    <p class="note">Recommendations and proposed talks are our assessment of fit, not organizer endorsements or promises of acceptance or consulting revenue. Conference totals describe the entire event, not the size of an individual speaking room.</p>
+  </section>
+
+  <section class="block" id="calendar">
+    <div class="eyebrow">Submission calendar · Apply in 2026 for most 2027 events</div>
+    <h2>Deadlines and application links</h2>
+    <p class="sub">Sorted by proposal deadline. Click an event name to open its speaker call. The status column counts down from today's date.</p>
+    <div class="table-scroll">
+      <table id="deadlines">
+        <thead><tr><th>Event</th><th>2027 date / location</th><th>Proposal deadline</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <h3 style="font-size:20px">Scheduling decisions</h3>
+    <div class="conflicts">
+      <div><strong>ASAE and IAITAM</strong><span>Overlap on May 11 in different cities. Avoid committing to both without an agreed speaking schedule.</span></div>
+      <div><strong>AIR and PSMJ</strong><span>Overlap June 2-4 in Denver. Being in one city does not remove the schedule conflict; AIR assigns concurrent sessions across Wednesday-Friday.</span></div>
+      <div><strong>ACMP and APQC</strong><span>ACMP ends May 4 and APQC begins May 5. Allow for immediate travel from Colorado to Houston.</span></div>
+    </div>
+    <p class="note">Registration links on each profile are separate from speaker applications. Where 2027 checkout is not confirmed, the link is labeled as information or updates. A submitted proposal does not create an attendee registration.</p>
+  </section>
+
+  <section class="block" id="attendance">
+    <div class="eyebrow">Audience size &amp; evidence · Read the year and the basis</div>
+    <h2>How many people attend?</h2>
+    <p class="sub">Three references below are completed-event counts or estimates. Others are projections, marketing figures or a reported typical scale.</p>
+    <div class="table-scroll">
+      <table id="audience">
+        <thead><tr><th>Conference</th><th>Attendance reference</th><th>What the figure means</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">The figures are not directly comparable: they refer to different years and counting methods. Each linked figure opens its source. None is a completed 2027 attendance count. The profiles explain the limitations and identify the people most relevant to our services.</p>
+  </section>
+
+  <section class="block" id="profiles">
+    <div class="eyebrow">Event profiles</div>
+    <h2>Ten conferences, one dossier each</h2>
+    <nav class="index" id="index" aria-label="Jump to an event"></nav>
+    <div id="events" style="display:grid;gap:24px"></div>
+  </section>
+
+  <section class="block" id="approach">
+    <div class="eyebrow">From the talk to the next engagement · A repeatable approach</div>
+    <h2>How we present and follow through</h2>
+    <p class="sub">Use a consistent core story, then change the case, vocabulary and exercise for each audience.</p>
+    <div class="plays">
+      <div class="panel">
+        <h3>Keep the history, give it a job</h3>
+        <p>Use the history to explain what changed and what the organization should do next. For a 45-minute session:</p>
+        <div class="split" role="img" aria-label="45-minute session: 5 minutes history, 15 working case, 10 participation, 5 implementation, 10 discussion">
+          <div style="flex:5;background:var(--rule)">5</div>
+          <div style="flex:15;background:var(--accent-soft)">15</div>
+          <div style="flex:10;background:var(--due-soft)">10</div>
+          <div style="flex:5;background:var(--rule)">5</div>
+          <div style="flex:10;background:var(--accent-soft)">10</div>
+        </div>
+        <div class="legend"><span>5 min history</span><span>15 working case</span><span>10 participation</span><span>5 implementation</span><span>10 discussion</span></div>
+        <p class="note">Adapt to the required format; UMD allows only 30 minutes for the speaker presentation.</p>
+      </div>
+      <div class="panel">
+        <h3>Make the two-presenter format useful</h3>
+        <p>Suggested division: Daniel leads the history and business framing. Jenn or another co-presenter leads the worked example and audience exercise. Match those roles to actual expertise.</p>
+        <p>Where the call favors end users, include a client or internal process owner who can explain the problem, constraints and observed results.</p>
+      </div>
+      <div class="panel">
+        <h3>Prepare one strong submission kit</h3>
+        <p><b>Speaker evidence.</b> A concise bio, headshot, selected prior talks and a two- to three-minute video showing clear delivery.</p>
+        <p><b>Session evidence.</b> A short abstract, three learning objectives, an audience exercise and one usable handout. Tailor the problem to the event.</p>
+        <p><b>Case evidence.</b> A before-and-after workflow, actual timing and quality observations, human review effort and a candid explanation of limitations. Describe prototypes accurately.</p>
+        <p><b>Delivery readiness.</b> An offline version of the example, a plan for audience participation and agreed roles for every presenter.</p>
+      </div>
+      <div class="panel">
+        <h3>Create a clear next step for interested organizations</h3>
+        <p>Share a useful handout through an approved channel. In voluntary follow-up conversations, ask which process is creating friction, who owns it and what improvement would matter.</p>
+        <p>Suggest a defined next engagement: an executive briefing, workflow assessment, small pilot or staff training program. Match the scope to the problem.</p>
+      </div>
+    </div>
+    <div class="alert">
+      <div><strong>Keep the session educational.</strong> Several calls prohibit commercial pitches. AIIM prohibits product demonstrations and does not provide attendee contacts; PSMJ restricts unauthorized solicitation in show areas. Use approved channels and voluntary follow-up. Speaking can build relationships; it does not guarantee clients.</div>
+    </div>
+    <div class="panel">
+      <h3>Before committing</h3>
+      <p>Confirm acceptance, session times, registration benefits, travel obligations and event terms. Resolve the ASAE/IAITAM and AIR/PSMJ overlaps. Dates, calls and links were reviewed September 29, 2026 and may change.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div>2027 AI Speaking &amp; Consulting · Expanded Opportunity Guide · Prepared for Daniel Tal and presenting team</div>
+    <div>Verified September 29, 2026. Recommendations are our assessment of fit, not organizer endorsements or promises of acceptance or consulting revenue.</div>
+  </footer>
+</div>
+
+<script>
+const EVENTS = [
+  { n: "01", id: "acmp", short: "ACMP Change Denver", name: "ACMP Change Denver", sector: "Organizational change",
+    dates: "May 1-4, 2027", place: "Aurora, Colorado", tableDates: "May 1-4 | Aurora, CO",
+    deadline: "2026-09-30", deadlineText: "Sep 30, 2026", deadlineFull: "September 30, 2026, 11:59 p.m. Pacific",
+    callTable: "https://www.acmpglobal.org/page/2027-call-for-speakers",
+    att: "700+", attBasis: "2026 Orlando", attMeaning: "Organizer projection for the prior event. Denver 2027 total unverified.",
+    attLink: "https://cdn.ymaws.com/www.acmpglobal.org/resource/resmgr/events2/2025-11-06_chg_orlando.pdf#page=3",
+    org: "The Association of Change Management Professionals (ACMP) is an independent, member-led professional association established in 2011. It develops the Standard for Change Management, provides professional credentials and education, and connects practitioners through chapters, conferences and online communities. Its approach supports different change methods. The organization focuses on helping people adopt new ways of working and on translating organizational change into business results. Change Denver is its largest North American conference scheduled for 2027.",
+    who: "It serves internal change leaders, external consultants, HR and organizational development teams, project managers and communication leaders across industries. Relevant contacts for us are transformation directors, change practice leaders and consultants seeking an AI implementation partner.",
+    attendance: "700+ was the organizer's projected attendance for Change Orlando 2026, the prior North American event. A Denver 2027 headcount was not published in the sources reviewed. Use 700+ only as a prior-event planning reference, not a confirmed turnout.",
+    talk: "AI Adoption After the Demo: Redesigning Work, Roles and Training",
+    format: "Propose an interactive case-study session; select the duration offered in the submission portal.",
+    deliver: "Open with a brief history of technology adoption and the gap between a compelling demonstration and changed behavior. Walk through one real team workflow before and after AI, including resistance, manager involvement and human review. Have participants map who must change, what support they need and how success will be measured. Close with a practical 30-day adoption plan they can adapt.",
+    leave: "Identify adoption barriers; assign owners and training needs; define a useful adoption measure.",
+    apply: "Use the 2027 multi-event speaker call and select Change Denver. Submit by September 30, 2026, at 11:59 p.m. Pacific. Prepare a focused abstract, presenter bios, learning objectives and an interaction plan. Position our experience introducing tools and training working teams as the evidence behind the proposal. Final session length and speaker benefits should be checked in the submission guide.",
+    consult: "Potential work: an AI readiness assessment, manager briefing, role-based training and a supported adoption pilot. Build relationships with internal change leaders and consulting firms that need practical AI delivery capabilities. These are prospective services, not promised leads.",
+    call: "https://www.acmpglobal.org/page/2027-call-for-speakers",
+    reg: "https://changedenver27.eventscribe.net/", regNote: "2027 attendee registration is open; Gaylord Rockies, Aurora.",
+    sources: [["About ACMP","https://www.acmpglobal.org/page/about_acmp"],["Attendance: 2026 prospectus, p. 3","https://cdn.ymaws.com/www.acmpglobal.org/resource/resmgr/events2/2025-11-06_chg_orlando.pdf#page=3"],["2027 event announcement","https://www.acmpglobal.org/news/728894/ACMP-Opens-Registration-for-Change-Denver-2027.htm"]] },
+
+  { n: "02", id: "tice", short: "TICE", name: "Training Industry Conference & Expo", sector: "Corporate learning and development",
+    dates: "June 8-10, 2027", place: "Raleigh, North Carolina", tableDates: "Jun 8-10 | Raleigh, NC",
+    deadline: "2026-10-02", deadlineText: "Oct 2, 2026", deadlineFull: "October 2, 2026",
+    callTable: "https://trainingindustry.com/tice/training-industry-conference-expo-call-for-presenters/",
+    att: "650+", attBasis: "2027 promotion", attMeaning: "Learning leaders advertised on the current event page; final count unknown.",
+    attLink: "https://tice.trainingindustry.com/a9qoYZ?RefId=website",
+    org: "Training Industry, Inc. is a corporate learning research, publishing and professional development company founded in 2005. It provides articles, research, courses, the Certified Professional in Training Management credential, supplier information and a learning community. It serves both people who run employee training and companies supplying training services. TICE is its in-person Conference & Expo, designed around practical learning, professional exchange and connections among learning leaders.",
+    who: "The audience includes learning and development (L&D) directors, training managers, HR learning teams and training suppliers. These are useful contacts for company-wide AI literacy, manager education and programs that help employees use AI in everyday work.",
+    attendance: "The official 2027 event page promotes 650+ learning leaders. Treat this as the organizer's advertised conference scale, not a final 2027 attendance count. It does not establish how many people will attend our individual session.",
+    talk: "Building AI Fluency: Turn Everyday Work into a Practical Learning Program",
+    format: "45-minute educational session; up to four presenters.",
+    deliver: "Use AI history to explain why training must change as tools change. Demonstrate one everyday task, then show how to turn it into a repeatable learning activity with a prompt, a review checklist and a manager follow-up. Participants draft a four-week AI learning plan for one role. Explain how to assess competence through work samples and observed use, rather than course completion alone.",
+    leave: "Choose a role-specific task; build a practice activity; evaluate usable skills and adoption.",
+    apply: "Apply by October 2, 2026. Prepare a title of up to 90 characters, 400-character bio and pitch, 1,500-character description, three or four objectives, and an engagement plan. Include a short speaking video. Training vendor slots are limited; a client or L&D practitioner co-presenter is strongly encouraged. Draft answers before opening the form, because exited or submitted applications cannot be edited.",
+    consult: "Potential work: AI literacy workshops, train-the-trainer programs and recurring staff development. Bring a client who can describe the learning problem and results, while we teach the transferable method. Selected speakers receive registration; speaking is unpaid.",
+    call: "https://www.surveymonkey.com/r/GK6LMX5",
+    reg: "https://tice.trainingindustry.com/a9qoYZ?RefId=website", regNote: "2027 event and registration hub is live; selected speakers receive registration.",
+    sources: [["About Training Industry","https://trainingindustry.com/about/"],["Attendance: 2027 event page","https://tice.trainingindustry.com/a9qoYZ?RefId=website"],["Proposal requirements PDF","https://trainingindustry.com/content/uploads/2026/07/TICE-2027-Call-For-Presenters.pdf"]] },
+
+  { n: "03", id: "apqc", short: "APQC CONNECT", name: "APQC CONNECT", sector: "Process improvement and knowledge management",
+    dates: "May 5-6, 2027", place: "Houston, Texas", tableDates: "May 5-6 | Houston, TX",
+    deadline: "2026-10-12", deadlineText: "Oct 12, 2026", deadlineFull: "October 12, 2026, 11:00 p.m. Eastern",
+    callTable: "https://www.apqc.org/events/2027/apqc-conference/call-for-speakers",
+    att: "More than 300", attBasis: "typical", attMeaning: "Organizer-reported typical conference attendance; not a 2027 count.",
+    attLink: "https://www.apqc.org/events/2027/apqc-conference/call-for-speakers",
+    org: "APQC, the American Productivity & Quality Center, is a nonprofit research and membership organization focused on benchmarking, business processes, performance improvement and knowledge management. It supplies comparative data, case studies, process frameworks, training and advisory services so organizations can understand and improve how work gets done. Its membership covers more than 1,000 organizations. CONNECT brings its process and knowledge communities together to exchange implementation experience and practical methods.",
+    who: "APQC serves organizations across business and the public sector. Conference participants include process owners, knowledge managers, improvement leaders, directors and consultants from more than 40 industries. Our best contacts are leaders accountable for a recurring process or an internal knowledge program.",
+    attendance: "APQC describes its conference as attracting more than 300 participants. This is an organizer-reported typical audience, not a counted 2027 turnout. Its concentrated process and knowledge audience may matter more to us than the total event size.",
+    talk: "From Manual Work to AI Workflows: Measuring Time, Quality and Human Review",
+    format: "Propose a 45-minute interactive case study, subject to the portal's available session types.",
+    deliver: "Keep the historical opening brief, then map a recurring task such as research-to-report production. Show its original steps, the AI-assisted version, the review responsibilities and the measured results. Give participants a simple process map and ask them to select one safe pilot. Discuss what failed and what remained manual. This audience needs evidence of implementation and a usable improvement method.",
+    leave: "Map a workflow; select an AI intervention; measure cycle time, quality and review effort.",
+    apply: "Submit through the linked speaker call by October 12, 2026, at 11 p.m. Eastern. Include the real business problem, steps taken, results and participant exercise. Use actual measurements rather than proposed savings. The primary presenter receives registration; an optional co-presenter receives a 50% discount for sessions of at least 45 minutes. Presenters cover travel and lodging.",
+    consult: "Potential work: workflow assessments, knowledge-access pilots and implementation support. A process owner can sponsor a defined pilot, while a knowledge leader may commission a broader information workflow review. Our strongest proposal includes a documented case and an internal practitioner.",
+    call: "https://www.apqc.org/events/2027/apqc-conference/call-for-speakers",
+    reg: "https://www.apqcconnect.org/2027/pricing", regNote: "2027 pricing and registration information is posted; active checkout was not confirmed.",
+    sources: [["About APQC","https://www.apqc.org/about"],["Attendance and speaker requirements","https://www.apqc.org/events/2027/apqc-conference/call-for-speakers"],["2027 conference","https://www.apqcconnect.org/2027"]] },
+
+  { n: "04", id: "aiim", short: "AI+IM Global Summit", name: "AI+IM Global Summit", sector: "Information management and practical AI",
+    dates: "April 19-21, 2027", place: "Houston, Texas", tableDates: "Apr 19-21 | Houston, TX",
+    deadline: "2026-10-18", deadlineText: "Oct 18, 2026", deadlineFull: "October 18, 2026",
+    callTable: "https://www.aiim.org/aiim-global-summit-2027-call-for-speakers",
+    att: "300 / 400", attBasis: "2027", attMeaning: "Expected attendees / total on site including speakers and sponsors.",
+    attLink: "https://info.aiim.org/aiim-global-summit-2027-sponsorship-prospectus",
+    org: "The Association for Intelligent Information Management (AIIM) is a nonprofit association founded in 1944 that serves information leaders in more than 67 countries. Its community includes practitioners, consultants and technology providers. AIIM offers certification, education, research and practical resources on organizing and using business information, especially documents and other unstructured content. Its AI+IM Summit connects that established information-management discipline with AI preparation, automation and organizational adoption.",
+    who: "The audience includes records and information governance leaders, document and content managers, knowledge specialists and transformation teams. The 2027 prospectus emphasizes managers and executives and organizations with more than 1,000 employees. Relevant needs include trusted knowledge access and better document workflows.",
+    attendance: "The 2027 sponsor prospectus expects 300 attendees, or 400 people on site when speakers and sponsors are included. These are organizer projections. The smaller format includes workshops and cohort-table networking, which can support detailed conversations.",
+    talk: "Making Organizational Knowledge Useful with AI: From Documents to Verified Work",
+    format: "45-minute interactive session or 90-minute workshop; end-user participation is prioritized.",
+    deliver: "Trace the shift from storing documents to retrieving and using organizational knowledge. Walk through a neutral case using an approved set of documents: define the question, organize source material, produce an answer, verify its evidence and route exceptions to a person. Have participants assess a sample answer and design a review step. Present a method and case results; AIIM prohibits product demonstrations and commercial pitches.",
+    leave: "Assess information readiness; verify an AI-produced answer; assign review and ownership.",
+    apply: "Submit by October 18, 2026, through AIIM's abstract portal. Provide all presenter details, a session description, objectives and concrete takeaways. Confirm co-presenters before submission. Pair with the person who owns the information process if possible; user-led or co-led sessions receive priority. Accepted speakers receive conference registration. AIIM does not provide attendee contact lists.",
+    consult: "Potential work: a document-readiness assessment, a knowledge workflow pilot and staff training in verification. Build credibility through a practical workshop and voluntary follow-up conversations. Partner with an information-management specialist where records or governance expertise is needed.",
+    call: "https://aiimglobalsummit2027.eventify.io/px/abstracts/portal/abstract/1875213738379748",
+    reg: "https://www.aiim.org/aiim-global-summit-2027-coming-soon", regNote: "Registration is expected in mid-October 2026; the link provides opening notifications.",
+    sources: [["About AIIM","https://www.aiim.org/about-section/about-us"],["Attendance: 2027 prospectus","https://info.aiim.org/aiim-global-summit-2027-sponsorship-prospectus"],["Speaker requirements","https://www.aiim.org/aiim-global-summit-2027-call-for-speakers"]] },
+
+  { n: "05", id: "psmj", short: "PSMJ AEC INNOVATE", name: "PSMJ AEC INNOVATE", sector: "AEC executives and technology leaders",
+    dates: "June 2-4, 2027", place: "Denver, Colorado", tableDates: "Jun 2-4 | Denver, CO",
+    deadline: "2027-02-15", deadlineText: "Feb 15, 2027", deadlineFull: "February 15, 2027",
+    callTable: "https://events.psmj.com/innovate/call-for-presentions/",
+    att: "Approx. 350", attBasis: "2025", attMeaning: "Firsthand attendee estimate from the Austin event; not an audited count.",
+    attLink: "https://mgsglobalgroup.com/2025/07/01/why-ai-is-a-business-strategy-not-just-a-tool-insights-for-aec-firm-leaders/",
+    org: "PSMJ Resources, Inc. is an advisory, education and business information company focused on architecture, engineering and construction organizations. Its work centers on improving firm performance through consulting, training, data and management advice. AEC INNOVATE is its conference for executives deciding how emerging technology should affect their firms. It combines business strategy, practical implementation examples and access to technology providers. This is the closest match to Daniel's existing professional credibility and client experience.",
+    who: "PSMJ serves AEC firm owners and management teams. Attendees include principals, CEOs, COOs, CIOs, innovation directors, technology leaders and project leaders. The most useful contacts for us can authorize staff training, production changes and firm-level technology initiatives.",
+    attendance: "A firsthand MGS Global Group recap estimated approximately 350 attendees at AEC INNOVATE 2025 in Austin. This is an attendee's estimate, not an official audited count. No 2027 attendance projection was verified.",
+    talk: "AI, Fees and Production: Rebuilding the Economics of a Design Firm",
+    format: "45-minute breakout with Q&A flex time, or a 50-minute keynote plus 15 minutes of Q&A.",
+    deliver: "Use the history of CAD, modeling and AI to frame the business consequences of a production change. Present one credible design-office workflow and compare effort, review burden, quality and client value. Ask leaders to choose a pilot and identify the effects on staffing, scope and delivery. Discuss fee implications as scenarios, avoiding unsupported promises of cost savings or replacement of staff.",
+    leave: "Select a production pilot; track real economics; plan training and quality review.",
+    apply: "Submit a breakout or keynote proposal by February 15, 2027, using the embedded form on the speaker page. Lead with an AEC business problem, a case and actions leaders can take. Selected speakers receive registration. Main sessions run June 3-4; June 2 is the optional workshop day. Request scheduling clarity if also considering AIR Forum.",
+    consult: "Potential work: a firm AI roadmap, workflow pilot and staff training program. PSMJ expressly prohibits unauthorized solicitation in show areas. Use the educational speaking role to build credibility; arrange permission-based follow-up and ask about approved exhibitor or sponsor options for on-site promotion.",
+    call: "https://events.psmj.com/innovate/call-for-presentions/",
+    reg: "https://register.psmj.com/aec-innovate-2027", regNote: "2027 registration is open. Denver dates overlap AIR Forum.",
+    sources: [["About PSMJ","https://www.psmj.com/about-us/"],["Attendance: July 2025 firsthand recap","https://mgsglobalgroup.com/2025/07/01/why-ai-is-a-business-strategy-not-just-a-tool-insights-for-aec-firm-leaders/"],["Event FAQ and solicitation policy","https://events.psmj.com/innovate/faq/"]] },
+
+  { n: "06", id: "asae", short: "ASAE MMC+Tech", name: "ASAE MMC+Tech Conference", sector: "Associations, membership and communications",
+    dates: "May 10-11, 2027", place: "Washington, DC", tableDates: "May 10-11 | Washington, DC",
+    deadline: "2026-10-19", deadlineText: "Oct 19, 2026", deadlineFull: "October 19, 2026",
+    callTable: "https://mmct.asaecenter.org/",
+    att: "Nearly 1,400", attBasis: "2026", attMeaning: "Organizer report: includes 906 association professionals plus others.",
+    attLink: "https://www.asaecenter.org/about-us/news_releases/2026/nearly-1400-gather-for-asae-mmctech-in-dc",
+    org: "The American Society of Association Executives (ASAE) is a membership organization for people who lead, manage and support associations and nonprofits. It provides professional education, community, research and advocacy for the association profession. Its community spans executive leadership, finance, technology and other management functions. MMC+Tech is its focused conference on marketing, membership, communications and technology, making it a useful route into organizations that serve many different industries and professions.",
+    who: "Attendees include association marketing and membership directors, communications staff, technology leaders and service providers. These teams need to deliver member value with limited staff capacity. They can be potential consulting clients and, where appropriate, introducers to education opportunities for their members.",
+    attendance: "ASAE reported nearly 1,400 people at MMC+Tech 2026: 906 association professionals, 364 exhibitors and more than 100 speakers and other registrants. This is an actual prior-event report, not a 2027 projection. The association-professional count is the more relevant buyer reference.",
+    talk: "AI for Association Teams: Research, Communications and Member Service",
+    format: "Propose a practical breakout; confirm length and format in the 2027 proposal portal.",
+    deliver: "Connect the history of publishing and communication tools to today's AI-supported association work. Use one member question to demonstrate a verified response, a staff briefing and a reusable communication draft. Let attendees identify the source of truth and the approval owner. Finish with a small-team implementation plan. Use an association example built with a practitioner, rather than assuming an AEC example will transfer by itself.",
+    leave: "Choose a member-service workflow; define source and approval rules; plan a staff pilot.",
+    apply: "The official homepage confirms a 2027 call closing October 19, 2026. Follow its Submit Your Proposal link to the 2027 site. Prepare the problem, case, objectives, engagement plan and speaker bios; check final fields there. An association staff co-presenter would strengthen sector relevance. Session length, speaker compensation and 2027 registration availability were not confirmed.",
+    consult: "Potential work: an association staff AI workshop, member-service pilot and communication workflow review. A successful project may lead to a member webinar or additional introductions, but that route should be discussed with the association rather than assumed.",
+    call: "https://mmct.asaecenter.org/",
+    reg: "https://mmct2027.asaecenter.org/", regNote: "2027 registration was not confirmed. Use the 2027 hub; the older Attend page shows 2026 details.",
+    sources: [["ASAE profile and 2026 attendance report","https://www.asaecenter.org/about-us/news_releases/2026/nearly-1400-gather-for-asae-mmctech-in-dc"],["2027 dates and speaker call","https://mmct.asaecenter.org/"],["2027 conference portal","https://mmct2027.asaecenter.org/"]] },
+
+  { n: "07", id: "umd", short: "UMD PM Symposium", name: "University of Maryland PM Symposium", sector: "Project management across industries",
+    dates: "April 29-30, 2027", place: "College Park, Maryland; online attendance", tableDates: "Apr 29-30 | College Park, MD",
+    deadline: "2026-10-26", deadlineText: "Oct 26, 2026", deadlineFull: "October 26, 2026",
+    callTable: "https://pmsymposium.umd.edu/2027/speaker-information/",
+    att: "802", attBasis: "2023", attMeaning: "University report. Historical participant total; mode split unspecified.",
+    attLink: "https://cee.umd.edu/sites/civil.umd.edu/files/Web-Civil%20Remarks%202023%20Pages.pdf#page=14",
+    org: "The University of Maryland Project Management Center for Excellence is part of the A. James Clark School of Engineering. It combines project-management education, research and professional development. Its programs serve engineers, architects and other technical professionals, while its training and symposium reach a wider project-management community. The annual symposium brings academic research and working practitioners together around project delivery, leadership, methods and emerging technology.",
+    who: "The audience includes project and program managers, PMO leaders, technical professionals and people working in government, industry and academia. The 2027 topic list explicitly includes AI productivity, agents, process automation and human-AI teaming. Our relevant buyers are team leaders and sponsors of workforce development.",
+    attendance: "UMD's 2023 Civil Remarks publication reports a record 802 participants at the 2023 symposium. This is a historical total; the passage does not split online and in-person participation. A newer actual total was not verified. Do not read it as a 2027 forecast or room size.",
+    talk: "AI Agents for Project Teams: Faster Research, Reporting and Coordination",
+    format: "Live: 45 minutes including 5-minute introduction, 30-minute talk and 10-minute Q&A. Recorded: 30-45 minutes.",
+    deliver: "Show how project reporting evolved, then follow a single project from meeting notes to a status report, action list and risk update. Demonstrate where AI can assist and where a project manager must check facts, dates and accountability. Participants choose a task for a pilot and define the approval step. Keep the example usable across industries and include a recorded demonstration as a fallback.",
+    leave: "Select a project task; design a human review point; evaluate time and reporting quality.",
+    apply: "Submit a presentation description by October 26, 2026. New speakers must include a two-minute video. Apply for an in-person slot if networking is the priority. Accepted speakers have a mandatory January 14, 2027 webinar and, for in-person speakers, an April 15 logistics webinar. Sessions are recorded and remain available to attendees for one year.",
+    consult: "Potential work: PMO AI workshops, reporting workflow pilots and team training. Our project-delivery background provides a useful bridge beyond AEC. An on-demand session offers reach, while an in-person slot offers more opportunity for direct conversations with team leaders.",
+    call: "https://pmsymposium.umd.edu/2027/call-for-papers/submit-to-be-a-speaker/",
+    reg: "https://pmsymposium.umd.edu/2027/registration-landing/", regNote: "2027 registration information is posted; an active checkout was not confirmed.",
+    sources: [["About the UMD center","https://pm.umd.edu/about/the-center/"],["Attendance: Civil Remarks 2023, p. 12","https://cee.umd.edu/sites/civil.umd.edu/files/Web-Civil%20Remarks%202023%20Pages.pdf#page=14"],["2027 speaker requirements","https://pmsymposium.umd.edu/2027/speaker-information/"]] },
+
+  { n: "08", id: "agent", short: "Agent Conference", name: "Agent Conference", sector: "Enterprise AI agents",
+    dates: "May 17-18, 2027", place: "New York City, New York", tableDates: "May 17-18 | New York, NY",
+    deadline: null, deadlineText: "Rolling / no cutoff", deadlineFull: "Rolling submissions; no published cutoff",
+    callTable: "https://www.agentconference.com/call-for-proposals",
+    att: "4,000+", attBasis: "2027", attMeaning: "Organizer projection for the 2027 New York event.",
+    attLink: "https://www.agentconference.com/",
+    org: "Agent Conference is an enterprise AI conference series and event community focused on autonomous AI systems. Its 2027 program is organized around business functions, including enterprise leadership, engineering, IT, finance, legal, security and customer-facing work. It brings executives, founders, technical builders and investors into the same event. Its stated programming emphasis is actual deployment experience: what was implemented, the cost, the failures and the lessons that other organizations can use.",
+    who: "The event targets CEOs, COOs, CIOs, chief AI officers, CTOs and other senior functional leaders, alongside builders and investors. This is a more ambitious target for us: attendees are likely to expect a substantive implementation story and clear operating results.",
+    attendance: "The organizer expects 4,000+ attendees for the 2027 edition, plus 100+ exhibitors and 100+ speakers. These are promotional projections, not completed-event attendance. The attendee total should not be treated as a count of available consulting buyers.",
+    talk: "From AI Tools to Working Agents: A Professional Services Implementation Case Study",
+    format: "Submit a tentative adoption case; the program team develops format and co-speakers with selected presenters.",
+    deliver: "Use only a short historical frame explaining the move from a tool that answers questions to a system that performs bounded tasks. Present an actual professional-services agent pilot: the task, information access, approvals, failure cases, operating cost and observed value. Show the division between AI actions and human decisions. If the work is still a prototype, identify it accurately and propose the session around lessons from that stage.",
+    leave: "Distinguish assistance from delegated action; identify control points; evaluate a pilot's value.",
+    apply: "The 2027 call is open on a rolling basis with no published cutoff. Submit a working title, rough angle and presenter details through the speaking portal. Choose Agentic Enterprises for the business adoption story. Bring an executive or process owner connected to the implementation if possible. Product pitches are prohibited, including for sponsors; acceptance and final format are discretionary.",
+    consult: "Potential work: agent opportunity assessments, tightly scoped pilots and partnerships with technology providers. This becomes a stronger target once we can show a working deployment and documented results. Present it as an ambitious business-development opportunity rather than a likely booking.",
+    call: "https://backstage.agentconference.com/agentconf2027/cfp",
+    reg: "https://tickets.agentconference.com/agentconf2027/buy-tickets", regNote: "2027 tickets are on sale; New York Hilton Midtown.",
+    sources: [["Event, audience and attendance projection","https://www.agentconference.com/"],["2027 speaker requirements","https://www.agentconference.com/call-for-proposals"],["Event terms / organizer contact","https://www.agentconference.com/terms-of-service"]] },
+
+  { n: "09", id: "iaitam", short: "IAITAM ACE", name: "IAITAM Annual Conference & Exhibition", sector: "IT asset management",
+    dates: "May 11-13, 2027", place: "Henderson / Las Vegas area, Nevada", tableDates: "May 11-13 | Henderson, NV",
+    deadline: null, deadlineText: "Not published", deadlineFull: "Open call; submission deadline not published",
+    callTable: "https://iaitam.org/ace-speaker-call/",
+    att: "1,000+", attBasis: "2026 promotion", attMeaning: "Prior-event advertised scale. No verified 2027 event total.",
+    attLink: "https://iaitam.org/ace/",
+    org: "The International Association of Information Technology Asset Managers (IAITAM) is a professional association established in 2002 for people and organizations managing technology assets. Its scope includes software, hardware and the processes spanning their lifecycle. It provides certification, education, best-practice resources and professional exchange. ACE, its Annual Conference & Exhibition, connects technology management with business concerns such as cost, procurement, contracts, operations and accountability.",
+    who: "It serves IT asset managers, software and hardware asset teams, IT leaders, procurement, finance, legal and compliance functions across industries. For us, the relevant contacts are leaders who must understand which AI tools employees use, who owns them and whether those tools create business value.",
+    attendance: "The official 2026 ACE event listing advertised 1,000+ attendees. This is prior-event marketing, not a verified post-event count. The 2027 page also cites more than 2,000 attendees worldwide annually across ACE events; that broader figure is not the headcount for this one conference.",
+    talk: "Managing AI Tools as Business Assets: Adoption, Cost and Accountability",
+    format: "60-minute educational session: 45 minutes of content plus 15 minutes of engagement and Q&A.",
+    deliver: "Frame the shift from installed software to subscriptions and usage-based AI services. Show an example AI tool register with a business owner, purpose, users, data exposure, cost and renewal decision. Have participants assess a tool and decide whether to expand, train, consolidate or retire it. Pair our adoption and workflow perspective with a qualified ITAM practitioner for specialist lifecycle and licensing questions.",
+    leave: "Inventory AI use; connect cost to useful work; assign ownership and review dates.",
+    apply: "The 2027 speaker call is open; no closing date was published on the page reviewed. Use the speaker proposal link, which requires an account. Choose an educational session and prepare a practical abstract, objectives, experience and engagement plan. Confirm the deadline directly with IAITAM. Selected speakers receive registration. Specialized formats, including workshops and deep dives, are also offered.",
+    consult: "Potential work: an AI tool inventory and adoption review, staff training and a pilot value assessment. The sector-specific co-presenter is important: our contribution should focus on implementation and use, with asset-management expertise supplied by someone who practices it.",
+    call: "https://iaitam.org/ace-speaker-proposal/",
+    reg: "https://iaitam.org/ace-register/", regNote: "2027 registration link is available; M Resort, Henderson / Las Vegas area.",
+    sources: [["About IAITAM","https://iaitam.org/about-us/"],["Attendance: 2026 event listing","https://iaitam.org/ace/"],["2027 event and audience","https://iaitam.org/2027-ace/"]] },
+
+  { n: "10", id: "air", short: "AIR Forum", name: "AIR Forum", sector: "Higher education data and planning",
+    dates: "June 1-4, 2027", place: "Denver, Colorado", tableDates: "Jun 1-4 | Denver, CO",
+    deadline: "2026-10-16", deadlineText: "Oct 16, 2026", deadlineFull: "October 16, 2026",
+    callTable: "https://www.airweb.org/forum/2027/information/call-for-proposals",
+    att: "1,500+", attBasis: "average", attMeaning: "Historical average stated in 2026 prospectus; period unspecified.",
+    attLink: "https://www.airweb.org/docs/default-source/documents-for-pages/forum/2026/2026-air-forum-sponsor-prospectus.pdf?sfvrsn=6e47c0ed_2#page=3",
+    org: "The Association for Institutional Research (AIR) supports higher education professionals who use data and evidence to improve decisions and institutional outcomes. Its community covers institutional research, effectiveness, assessment, strategic planning and business intelligence. AIR develops research, professional learning, communities and partnerships that help colleges and universities build their capacity to use data. The AIR Forum is its annual gathering for sharing methods, applied research and practical experience.",
+    who: "Attendees include institutional research directors, analysts, assessment and planning staff, and related higher education leaders. These are potential users of AI for research support, report preparation and administrative knowledge work. A university or college practitioner should help us shape the example and language.",
+    attendance: "AIR's 2026 sponsorship prospectus lists average attendance of 1,500+. The averaging period is not specified. Treat this as an organizer-reported historical average, not a final 2026 count or 2027 forecast.",
+    talk: "Practical AI for Institutional Research: From Source Material to Verified Reports",
+    format: "45-minute speaker session with one to three presenters and at least 10 minutes of Q&A.",
+    deliver: "Briefly connect the history of information tools to institutional decision support. Use public or appropriately anonymized source material to demonstrate a draft institutional report, trace claims back to evidence and identify unsupported conclusions. Have participants audit a short AI-generated passage. Emphasize reproducibility, documented sources and review by a subject expert. Prepare an offline demonstration because session internet is not provided.",
+    leave: "Trace claims to sources; spot unsupported analysis; design a repeatable review workflow.",
+    apply: "Submit by October 16, 2026, through the AIR proposal portal. Choose Technology & Tools or Decision Support and include a higher education co-presenter if possible. Membership is not required. Concurrent-session presenters must register and attend in person; pre-conference-only presenters have a registration exception. An AI workshop is another option if we can provide deeper sector-specific instruction.",
+    consult: "Potential work: workshops for institutional research teams, reporting workflow assessments and small administrative pilots. This is a specialist expansion opportunity requiring higher education relevance. Confirm speaking dates before committing to both AIR and PSMJ, which overlap in Denver.",
+    call: "https://www.abstractscorecard.com/cfp/submit/login.asp?EventKey=YOYLSKAT",
+    reg: "https://www.airweb.org/forum/2027/home", regNote: "2027 event hub is live; attendee registration opening was not confirmed.",
+    sources: [["About AIR","https://www.airweb.org/about/who-we-are"],["Attendance: 2026 prospectus, p. 3","https://www.airweb.org/docs/default-source/documents-for-pages/forum/2026/2026-air-forum-sponsor-prospectus.pdf?sfvrsn=6e47c0ed_2#page=3"],["2027 speaker requirements","https://www.airweb.org/forum/2027/information/call-for-proposals"]] },
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ext = (href, text, cls = "") => `<a href="${esc(href)}" target="_blank" rel="noopener"${cls ? ` class="${cls}"` : ""}>${text}</a>`;
+
+function status(iso) {
+  if (!iso) return `<span class="pill">Open call</span>`;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const [y, m, d] = iso.split("-").map(Number);
+  const days = Math.round((new Date(y, m - 1, d) - today) / 86400000);
+  if (days < 0) return `<span class="pill done">Closed</span>`;
+  if (days === 0) return `<span class="pill hot">Closes today</span>`;
+  if (days === 1) return `<span class="pill hot">Closes tomorrow</span>`;
+  return `<span class="pill${days <= 14 ? " hot" : ""}">${days} days left</span>`;
+}
+
+const byDeadline = [...EVENTS].sort((a, b) => (a.deadline || "9999") .localeCompare(b.deadline || "9999"));
+document.querySelector("#deadlines tbody").innerHTML = byDeadline.map(e => `
+  <tr>
+    <td><span class="num">${e.n}.</span>${ext(e.callTable, esc(e.short))}<small><a href="#ev-${e.n}">Read the profile</a></small></td>
+    <td>${esc(e.tableDates)}</td>
+    <td class="big">${esc(e.deadlineText)}</td>
+    <td>${status(e.deadline)}</td>
+  </tr>`).join("");
+
+document.querySelector("#audience tbody").innerHTML = EVENTS.map(e => `
+  <tr>
+    <td><a href="#ev-${e.n}">${esc(e.short)}</a></td>
+    <td class="big">${ext(e.attLink, esc(e.att))}<small>${esc(e.attBasis)}</small></td>
+    <td>${esc(e.attMeaning)}</td>
+  </tr>`).join("");
+
+document.getElementById("index").innerHTML = EVENTS.map(e =>
+  `<a href="#ev-${e.n}"><span>${e.n}</span>${esc(e.short)}</a>`).join("");
+
+document.getElementById("events").innerHTML = EVENTS.map(e => `
+  <article class="event" id="ev-${e.n}">
+    <div class="tab">
+      <div class="big-n">${e.n}</div>
+      <dl>
+        <div><dt>Dates</dt><dd>${esc(e.dates)}</dd></div>
+        <div><dt>Location</dt><dd>${esc(e.place)}</dd></div>
+        <div><dt>Submission</dt><dd>${esc(e.deadlineFull)}</dd><dd>${status(e.deadline)}</dd></div>
+        <div><dt>Attendance ref.</dt><dd class="mono">${esc(e.att)}</dd></div>
+      </dl>
+    </div>
+    <div class="body">
+      <div class="eyebrow sector">${esc(e.sector)}</div>
+      <h3>${esc(e.name)}</h3>
+      <p><b>The organization.</b> ${esc(e.org)}</p>
+      <p><b>Who they serve and who we can reach.</b> ${esc(e.who)}</p>
+      <p><b>Conference attendance.</b> ${esc(e.attendance)}</p>
+      <div class="talk">
+        <div class="eyebrow">Proposed presentation</div>
+        <h4>${esc(e.talk)}</h4>
+        <p><b>Format.</b> ${esc(e.format)}</p>
+        <p><b>How we would deliver it.</b> ${esc(e.deliver)}</p>
+        <p class="outcomes"><b>Participants leave able to.</b> ${esc(e.leave)}</p>
+      </div>
+      <p><b>How we apply.</b> ${esc(e.apply)}</p>
+      <p><b>Consulting opportunity.</b> ${esc(e.consult)}</p>
+      <div class="actions">
+        ${ext(e.call, `<span class="lbl">Speaker application / call</span><small>Opens the 2027 speaker call</small>`, "primary")}
+        ${ext(e.reg, `<span class="lbl">Registration / information</span><small>${esc(e.regNote)}</small>`)}
+      </div>
+      <div class="sources"><span>Sources</span>${e.sources.map(([t, h]) => ext(h, esc(t))).join("")}</div>
+    </div>
+  </article>`).join("");
+</script>
+</body>
+</html>
